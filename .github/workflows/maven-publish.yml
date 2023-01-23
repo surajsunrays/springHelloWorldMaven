@@ -1,0 +1,57 @@
+name: Deploy to staging EKS cluster
+
+on:
+  push:
+    branches: [ "not-used" ]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REGISTRY: ${{ secrets.AWS_ECR_REPOSITORY }}
+  ECR_REPOSITORY: 'hello_world_maven'
+
+  # Setting Semver file name to read the release data
+  SEMVER_FILE_NAME: 'package.json'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to staging
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Echo package.json
+        id: read-version
+        run: |
+          RELEASE_VERSION=`grep -m1 version ${{ env.SEMVER_FILE_NAME }} | awk -F: '{ print $2 }' | sed 's/[ ",]//g'` 
+          echo version=$RELEASE_VERSION >> $GITHUB_OUTPUT
+
+      - name: Check Revision Variable
+        run: |
+          echo ${{ steps.read-version.outputs.version }}
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          RELEASE_VERSION: ${{ steps.read-version.outputs.version }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:staging-v$RELEASE_VERSION .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:staging-v$RELEASE_VERSION
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:staging-v$RELEASE_VERSION" >> $GITHUB_OUTPUT
