@@ -24,14 +24,12 @@ jobs:
           echo version=$RELEASE_VERSION >> $GITHUB_OUTPUT
           echo ${{secrets.CHECK_ENV}} | sed 's/./& /g'
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - uses: "marvinpinto/action-automatic-releases@latest"
         env:
-          RELEASE_BRANCH: ${{ github.head_ref }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          RELEASE_VERSION: ${{ steps.read-version.outputs.version }}
         with:
-          tag_name: v${{ steps.read-version.outputs.version }}
-          release_name: Release $RELEASE_BRANCH
-          draft: false
-          prerelease: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "v$RELEASE_VERSION"
+          prerelease: true
+          title: "Release $GITHUB_BRANCH"
+          files: |
