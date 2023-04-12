@@ -32,11 +32,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
+        if: steps.checkTag.outputs.exists != 'true'
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        if: ${{ steps.checkTag.outputs.exists }} == 'false'
         with:
           tag_name: v${{ steps.read-version.outputs.version }}
           release_name: Release ${{ github.ref_name }}
@@ -46,7 +46,6 @@ jobs:
             - Second Change
           draft: false
           prerelease: false
-          continue-on-error: true
 #      - uses: "marvinpinto/action-automatic-releases@latest"
 #        env:
 #          RELEASE_VERSION: ${{ steps.read-version.outputs.version }}
