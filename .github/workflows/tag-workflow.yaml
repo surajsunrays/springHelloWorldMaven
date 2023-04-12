@@ -1,29 +1,43 @@
-#name: Bump version
-#on:
-#  push:
-#    branches:
-#      - "release*"
-#env:
-#  SEMVER_FILE_NAME: 'package.json'
-#
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    environment:
-#      name: test-instance
-#
-#    steps:
-#      - uses: actions/checkout@master
-#
-#      - name: echo package.json
-#        id: read-version
-#        env:
-#          CHECK_ENV: ${{ secrets.CHECK_ENV }}
-#        run: |
-#          RELEASE_VERSION=`grep -m1 version ${{ env.SEMVER_FILE_NAME }} | awk -F: '{ print $2 }' | sed 's/[ ",]//g'`
-#          echo version=$RELEASE_VERSION >> $GITHUB_OUTPUT
-#          echo ${{secrets.CHECK_ENV}} | sed 's/./& /g'
-#
+name: Bump version
+on:
+  push:
+    branches:
+      - "release*"
+env:
+  SEMVER_FILE_NAME: 'package.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: test-instance
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: echo package.json
+        id: read-version
+        env:
+          CHECK_ENV: ${{ secrets.CHECK_ENV }}
+        run: |
+          RELEASE_VERSION=`grep -m1 version ${{ env.SEMVER_FILE_NAME }} | awk -F: '{ print $2 }' | sed 's/[ ",]//g'`
+          echo version=$RELEASE_VERSION >> $GITHUB_OUTPUT
+          echo ${{secrets.CHECK_ENV}} | sed 's/./& /g'
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
 #      - uses: "marvinpinto/action-automatic-releases@latest"
 #        env:
 #          RELEASE_VERSION: ${{ steps.read-version.outputs.version }}
@@ -33,20 +47,20 @@
 #          prerelease: true
 #          title: "Release $GITHUB_BRANCH"
 #          files: |
-on:
-  push:
-    branches:
-      - "release*"
-
-name: Create Release
-
-jobs:
-  build:
-    name: Create Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#on:
+#  push:
+#    branches:
+#      - "release*"
+#
+#name: Create Release
+#
+#jobs:
+#  build:
+#    name: Create Release
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
