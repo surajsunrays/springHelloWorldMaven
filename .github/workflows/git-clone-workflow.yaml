@@ -39,9 +39,9 @@ jobs:
           ls -lh
           cd k8s/helm-charts
           cd ${{ github.workspace }}
-          cp ${{ github.workspace }}/helm-charts/preview.values.yaml checkout-test.values.yaml
+          cp ${{ github.workspace }}/k8s/helm-charts/preview.values.yaml checkout-test.values.yaml
           
-          ls -lh ${{ github.workspace }}/helm-charts
+          ls -lh ${{ github.workspace }}/k8s/helm-charts
 #          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
 
 #      - uses: GuillaumeFalourd/git-commit-push@v1.3
