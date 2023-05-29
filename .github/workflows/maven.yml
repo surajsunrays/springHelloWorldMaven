@@ -20,8 +20,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Send Slack Message
+    - name: Notify slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: pullreminders/slack-action@master
       with:
-        token: ${{ secrets.SLACK_BOT_TOKEN }}
-        request: '{\"channel\":\"suraj-notes\",\"text\":\"Hello world\"}'
+        args: '{\"channel\":\"#suraj-notes\",\"text\":\"Hello world\"}'
