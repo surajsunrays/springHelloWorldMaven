@@ -1,0 +1,48 @@
+name: Create custom values file
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  push:
+    branches:
+      - master
+
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout devops_automation
+        uses: actions/checkout@v3
+        with:
+          repository: tailorbird-inc/devops_automation.git
+          token: ${{ secrets.CI_TOKEN }}
+          path: k8s/helm-charts
+          ref: 'preview-testing-file'
+
+      - name: Create local changes
+        env:
+          repo_branch: ${{ github.head_ref }}
+          pull_number: ${{ github.event.number }}
+        run: |
+          pwd
+          ls -lh
+#          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
+#
+#      - name: Commit files
+#        env:
+#          repo_branch: ${{ github.head_ref }}
+#          pull_number: ${{ github.event.number }}
+#        run: |
+#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#          git config --local user.name "github-actions[bot]"
+#          git commit -a -m "Created $repo_branch-$pull_number environment"
+#
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${{ github.ref }}
+
