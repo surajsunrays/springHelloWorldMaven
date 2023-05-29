@@ -37,20 +37,23 @@ jobs:
           ls -lh
           cd k8s/helm-charts/
           ls -lh
+          cd k8s/helm-charts
+          cd ${{ github.workspace }}
+          ls -lh
 #          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
 
-      - uses: GuillaumeFalourd/git-commit-push@v1.3
-        with:
-          email: ${{ github.actor }}@users.noreply.github.com
-          name: ${{ github.actor }}
-          commit_message: Created new environment
-          target_branch: preview-testing-file
-          files: .
-          remote_repository: https://github.com/tailorbird-inc/devops_automation
-          access_token: ${{ secrets.CI_TOKEN }}
-          force: false
-          empty: true
-          tags: true
+#      - uses: GuillaumeFalourd/git-commit-push@v1.3
+#        with:
+#          email: ${{ github.actor }}@users.noreply.github.com
+#          name: ${{ github.actor }}
+#          commit_message: Created new environment
+#          target_branch: preview-testing-file
+#          files: .
+#          remote_repository: https://github.com/tailorbird-inc/devops_automation
+#          access_token: ${{ secrets.CI_TOKEN }}
+#          force: false
+#          empty: true
+#          tags: true
 #      - name: Commit files
 #        env:
 #          repo_branch: ${{ github.head_ref }}
