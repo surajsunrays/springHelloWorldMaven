@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - name: Send Slack Message
-      uses: parkingboss/slackbot-postmessage@v1
+      uses: pullreminders/slack-action@master
       with:
         token: ${{ secrets.SLACK_BOT_TOKEN }}
         request: '{\"channel\":\"suraj-notes\",\"text\":\"Hello world\"}'
