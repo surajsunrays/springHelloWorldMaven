@@ -22,20 +22,21 @@ jobs:
           path: k8s/helm-charts
           ref: 'preview-testing-file'
 
-      - name: copy file
-        uses: canastro/copy-file-action@master
-        with:
-          source: "k8s/helm-charts/preview.values.yaml"
-          target: "k8s/helm0charts/checking-test.values.yaml"
+#      - name: copy file
+#        uses: canastro/copy-file-action@master
+#        with:
+#          source: "k8s/helm-charts/preview.values.yaml"
+#          target: "k8s/helm0charts/checking-test.values.yaml"
 
-#      - name: Create local changes
-#        env:
-#          repo_branch: ${{ github.head_ref }}
-#          pull_number: ${{ github.event.number }}
-#        run: |
-#          pwd
-#          ls -lh
-#          cd k8s/helm-charts/
+      - name: Create local changes
+        env:
+          repo_branch: ${{ github.head_ref }}
+          pull_number: ${{ github.event.number }}
+        run: |
+          pwd
+          ls -lh
+          cd k8s/helm-charts/
+          ls -lh
 #          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
 
       - uses: GuillaumeFalourd/git-commit-push@v1.3
