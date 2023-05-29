@@ -33,11 +33,15 @@ jobs:
           repo_branch: ${{ github.head_ref }}
           pull_number: ${{ github.event.number }}
         run: |
-          pwd
-          ls -lh
-          ls -lh /home/runner/work/SpringHelloWorldMaven/SpringHelloWorldMaven/k8s/helm-charts
-          cp /home/runner/work/SpringHelloWorldMaven/SpringHelloWorldMaven/k8s/helm-charts/dev.values.yaml checkout-test.values.yaml
-          ls -lh /home/runner/work/SpringHelloWorldMaven/SpringHelloWorldMaven/k8s/helm-charts
+          git clone https://github.com/tailorbird-inc/devops_automation.git
+          cd devops_automation/k8s/helm-charts
+          git checkout preview-testing-file
+          cp preview.values.yaml checkout-test.values.yaml
+          git add .
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Created test environment values"
+          git push origin preview-testing-file
 #          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
 
 #      - uses: GuillaumeFalourd/git-commit-push@v1.3
