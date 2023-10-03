@@ -16,9 +16,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Check Branch Name
+#      - name: Set output
+#        id: vars
+#        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+#
+#      - name: Check output
+#        run: echo ${{ steps.vars.outputs.short_ref }}
+
+      - name: Set env.BRANCH
         run: |
-          branch_name=$(echo "${{ github.ref }}" | sed 's#refs/heads/##')
+          echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+
+      - name: Check Branch Name
+        branch_name: env.BRANCH
+        run: |
+          #branch_name=$(echo "${{ github.ref }}" | sed 's#refs/heads/##')
           #branch_name=$(git symbolic-ref --short HEAD)
           if [[ "$branch_name" =~ ^feature/.*$ ]]; then
             echo "Branch name is valid: $branch_name"
