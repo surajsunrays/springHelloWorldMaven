@@ -25,10 +25,10 @@ jobs:
 
       - name: Set env.BRANCH
         run: |
-          echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
 
       - name: Check Branch Name
-        branch_name: env.BRANCH
+        branch_name: env.PR_BRANCH
         run: |
           #branch_name=$(echo "${{ github.ref }}" | sed 's#refs/heads/##')
           #branch_name=$(git symbolic-ref --short HEAD)
