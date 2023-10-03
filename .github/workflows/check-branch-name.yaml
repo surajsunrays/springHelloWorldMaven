@@ -24,7 +24,8 @@ jobs:
           echo "PR Branch Name: $PR_BRANCH_NAME"
 
       - name: Set PR Branch Name as an Output
-        run: echo "::set-output name=pr_branch_name::$PR_BRANCH_NAME"
+#        run: echo "::set-output name=pr_branch_name::$PR_BRANCH_NAME"
+        run: echo "{pr_branch_name}={$PR_BRANCH_NAME}" >> $GITHUB_OUTPUT
 
       - name: Use PR Branch Name in Another Step
         run: echo "The PR Branch Name is ${{ steps.extract-branch-name.outputs.pr_branch_name }}"
