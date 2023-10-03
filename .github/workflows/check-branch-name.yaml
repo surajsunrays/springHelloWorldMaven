@@ -16,39 +16,43 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Extract PR Branch Name
-        id: extract-branch-name
-        run: |
-          # Extract the branch name from the GITHUB_REF
-          PR_BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
-          echo "PR Branch Name: $PR_BRANCH_NAME"
-
-      - name: Set PR Branch Name as an Output
-#        run: echo "::set-output name=pr_branch_name::$PR_BRANCH_NAME"
-        run: echo "{pr_branch_name}={$PR_BRANCH_NAME}" >> $GITHUB_OUTPUT
-
-      - name: Use PR Branch Name in Another Step
-        run: echo "The PR Branch Name is ${{ steps.extract-branch-name.outputs.pr_branch_name }}"
-
-#      - name: Set output
-#        id: vars
-#        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+#      - name: Extract PR Branch Name
+#        id: extract-branch-name
+#        run: |
+#          # Extract the branch name from the GITHUB_REF
+#          PR_BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
+#          echo "PR Branch Name: $PR_BRANCH_NAME"
 #
-#      - name: Check output
-#        run: echo ${{ steps.vars.outputs.short_ref }}
+#      - name: Set PR Branch Name as an Output
+##        run: echo "::set-output name=pr_branch_name::$PR_BRANCH_NAME"
+#        run: echo "{pr_branch_name}={$PR_BRANCH_NAME}" >> $GITHUB_OUTPUT
+#
+#      - name: Use PR Branch Name in Another Step
+#        run: echo "The PR Branch Name is ${{ steps.extract-branch-name.outputs.pr_branch_name }}"
 
-#      - name: Set env.BRANCH
-#        run: |
-#          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+      - name: Set output
+        id: vars
+        run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+#
+      - name: Check output
+        run: echo ${{ steps.vars.outputs.short_ref }}
 
-#      - name: Check Branch Name
-##        branch_name: env.PR_BRANCH
-#        run: |
-#          #branch_name=$(echo "${{ github.ref }}" | sed 's#refs/heads/#')
-#          #branch_name=$(git symbolic-ref --short HEAD)
-#          if [[ "$branch_name" =~ ^feature/.*$ ]]; then
-#            echo "Branch name is valid: $branch_name"
-#          else
-#            echo "Branch name is invalid: $branch_name"
-#            exit 1
-#          fi
+      - name: Set env.BRANCH
+        id: branch-name
+        run: |
+          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+          ${{ steps.read-version.outputs.version }}
+
+      - name: Check Branch Name
+#        branch_name: env.PR_BRANCH
+        env:
+          REACT_APP_ANALYTICS_URL: ${{ steps.branch-name.outputs.PR_BRANCH }}
+        run: |
+          #branch_name=$(echo "${{ github.ref }}" | sed 's#refs/heads/#')
+          #branch_name=$(git symbolic-ref --short HEAD)
+          if [[ "$branch_name" =~ ^feature/.*$ ]]; then
+            echo "Branch name is valid: $branch_name"
+          else
+            echo "Branch name is invalid: $branch_name"
+            exit 1
+          fi
