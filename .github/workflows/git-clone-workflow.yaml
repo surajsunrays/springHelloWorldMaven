@@ -1,73 +1,84 @@
-name: Create custom values file
-
-on:
-  pull_request:
-    branches:
-      - "master"
-  push:
-    branches:
-      - master
-
-
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout devops_automation
-        uses: actions/checkout@v3
-        with:
-          repository: tailorbird-inc/devops_automation.git
-          token: ${{ secrets.CI_TOKEN }}
-          path: k8s/helm-charts
-          ref: 'preview-testing-file'
-
-#      - name: copy file
-#        uses: canastro/copy-file-action@master
+#name: Create custom values file
+#
+#on:
+#  pull_request:
+#    branches:
+#      - "master"
+#  push:
+#    branches:
+#      - master
+#
+#
+#jobs:
+#  build:
+#    name: Build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@master
 #        with:
-#          source: "k8s/helm-charts/preview.values.yaml"
-#          target: "k8s/helm0charts/checking-test.values.yaml"
-
-      - name: Create local changes
-        env:
-          repo_branch: ${{ github.head_ref }}
-          pull_number: ${{ github.event.number }}
-        run: |
-          git clone https://github.com/tailorbird-inc/devops_automation.git
-          cd devops_automation/k8s/helm-charts
-          git checkout preview-testing-file
-          cp preview.values.yaml checkout-test.values.yaml
-          git add .
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -m "Created test environment values"
-          git push origin preview-testing-file
-#          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
-
-#      - uses: GuillaumeFalourd/git-commit-push@v1.3
+#          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+#          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+#      - name: Create local changes
+#        run: |
+#          cp
+#      - name: Commit & Push changes
+#        uses: actions-js/push@master
 #        with:
-#          email: ${{ github.actor }}@users.noreply.github.com
-#          name: ${{ github.actor }}
-#          commit_message: Created new environment
-#          target_branch: preview-testing-file
-#          files: .
-#          remote_repository: https://github.com/tailorbird-inc/devops_automation
-#          access_token: ${{ secrets.CI_TOKEN }}
-#          force: false
-#          empty: true
-#          tags: true
-#      - name: Commit files
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Checkout devops_automation
+#        uses: actions/checkout@v3
+#        with:
+#          repository: tailorbird-inc/devops_automation.git
+#          token: ${{ secrets.CI_TOKEN }}
+#          path: k8s/helm-charts
+#          ref: 'preview-testing-file'
+#
+##      - name: copy file
+##        uses: canastro/copy-file-action@master
+##        with:
+##          source: "k8s/helm-charts/preview.values.yaml"
+##          target: "k8s/helm0charts/checking-test.values.yaml"
+#
+#      - name: Create local changes
 #        env:
 #          repo_branch: ${{ github.head_ref }}
 #          pull_number: ${{ github.event.number }}
 #        run: |
-#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#          git clone https://github.com/tailorbird-inc/devops_automation.git
+#          cd devops_automation/k8s/helm-charts
+#          git checkout preview-testing-file
+#          cp preview.values.yaml checkout-test.values.yaml
+#          git add .
+#          git config --local user.email "github-actions[bot]@users.noreply.github.com"
 #          git config --local user.name "github-actions[bot]"
-#          git commit -a -m "Created $repo_branch-$pull_number environment"
+#          git commit -m "Created test environment values"
+#          git push origin preview-testing-file
+##          cp preview.values.yaml $repo_branch-$pull_number.values.yaml
 #
-#      - name: Push changes
-#        uses: ad-m/github-push-action@master
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: ${{ github.ref }}
-
+##      - uses: GuillaumeFalourd/git-commit-push@v1.3
+##        with:
+##          email: ${{ github.actor }}@users.noreply.github.com
+##          name: ${{ github.actor }}
+##          commit_message: Created new environment
+##          target_branch: preview-testing-file
+##          files: .
+##          remote_repository: https://github.com/tailorbird-inc/devops_automation
+##          access_token: ${{ secrets.CI_TOKEN }}
+##          force: false
+##          empty: true
+##          tags: true
+##      - name: Commit files
+##        env:
+##          repo_branch: ${{ github.head_ref }}
+##          pull_number: ${{ github.event.number }}
+##        run: |
+##          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+##          git config --local user.name "github-actions[bot]"
+##          git commit -a -m "Created $repo_branch-$pull_number environment"
+##
+##      - name: Push changes
+##        uses: ad-m/github-push-action@master
+##        with:
+##          github_token: ${{ secrets.GITHUB_TOKEN }}
+##          branch: ${{ github.ref }}
+#
