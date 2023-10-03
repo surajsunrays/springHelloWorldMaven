@@ -18,7 +18,8 @@ jobs:
 
       - name: Check Branch Name
         run: |
-          branch_name=$(git symbolic-ref --short HEAD)
+          branch_name=$(echo "${{ github.ref }}" | sed 's#refs/heads/##')
+          #branch_name=$(git symbolic-ref --short HEAD)
           if [[ "$branch_name" =~ ^feature/.*$ ]]; then
             echo "Branch name is valid: $branch_name"
           else
