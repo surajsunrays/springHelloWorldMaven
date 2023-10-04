@@ -32,7 +32,7 @@ jobs:
 
       - name: Set output
         id: vars
-        run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+        run: echo "BRANCH=$(echo $GITHUB_HEAD_REF)" >> $GITHUB_ENV
 #
       - name: Check output
         run: echo ${{ steps.vars.outputs.short_ref }}
@@ -40,8 +40,8 @@ jobs:
       - name: Set env.BRANCH
         id: branch-name
         run: |
-          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
-          ${{ steps.read-version.outputs.version }}
+#          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+          echo "PR_BRANCH=$GITHUB_HEAD_REF" >>$GITHUB_ENV
 
       - name: Print All Pipeline Variables
         run: |
