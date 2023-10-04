@@ -43,6 +43,12 @@ jobs:
           echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
           ${{ steps.read-version.outputs.version }}
 
+      - name: Print All Pipeline Variables
+        run: |
+          for var in $(compgen -e); do
+            echo "$var=${!var}"
+          done
+
       - name: Check Branch Name
 #        branch_name: env.PR_BRANCH
         env:
