@@ -30,18 +30,18 @@ jobs:
 #      - name: Use PR Branch Name in Another Step
 #        run: echo "The PR Branch Name is ${{ steps.extract-branch-name.outputs.pr_branch_name }}"
 
-      - name: Set output
-        id: vars
-        run: echo "BRANCH=$(echo $GITHUB_HEAD_REF)" >> $GITHUB_ENV
-#
-      - name: Check output
-        run: echo ${{ steps.vars.outputs.short_ref }}
+#      - name: Set output
+#        id: vars
+#        run: echo "BRANCH=$(echo $GITHUB_HEAD_REF)" >> $GITHUB_ENV
+##
+#      - name: Check output
+#        run: echo ${{ steps.vars.outputs.short_ref }}
 
       - name: Set env.BRANCH
         id: branch-name
         run: |
 #          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
-          echo "PR_BRANCH=$GITHUB_HEAD_REF" >>$GITHUB_ENV
+          echo "PR_BRANCH=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
 
       - name: Print All Pipeline Variables
         run: |
