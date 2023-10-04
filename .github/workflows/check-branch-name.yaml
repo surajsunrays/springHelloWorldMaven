@@ -58,9 +58,9 @@ jobs:
           #branch_name=$(git symbolic-ref --short HEAD)
           echo $PR_BRANCH_NAME
           echo printenv
-          if [[ "$branch_name" =~ ^feature/.*$ ]]; then
-            echo "Branch name is valid: $branch_name"
+          if [[ "$PR_BRANCH_NAME" =~ ^feature/.*$ ]]; then
+            echo "Branch name is valid: $PR_BRANCH_NAME"
           else
-            echo "Branch name is invalid: $branch_name"
+            echo "Branch name is invalid: $PR_BRANCH_NAME"
             exit 1
           fi
