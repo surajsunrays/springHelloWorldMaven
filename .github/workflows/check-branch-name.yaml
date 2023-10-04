@@ -40,8 +40,9 @@ jobs:
       - name: Set env.BRANCH
         id: branch-name
         run: |
-#          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
           echo "PR_BRANCH=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
+#          echo "PR_BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+
 
       - name: Print All Pipeline Variables
         run: |
@@ -50,7 +51,6 @@ jobs:
           done
 
       - name: Check Branch Name
-#        branch_name: env.PR_BRANCH
         env:
           PR_BRANCH_NAME: ${{ steps.branch-name.outputs.PR_BRANCH }}
         run: |
