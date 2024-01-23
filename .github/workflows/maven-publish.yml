@@ -70,4 +70,4 @@ jobs:
           --image-repo surajsunrays/$ECR_REPOSITORY \
           --new-image-url dev-v2-v$RELEASE_VERSION-$GIT_COMMIT \
           --update-key tailorbird_web.image.0.tag \
-          --source-branch master
+          --source-branch main
