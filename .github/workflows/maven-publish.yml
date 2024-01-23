@@ -69,5 +69,5 @@ jobs:
           --file-path argo-cd/source/overlays/prod/prod.values.yaml \
           --image-repo surajsunrays/$ECR_REPOSITORY \
           --new-image-url dev-v2-v$RELEASE_VERSION-$GIT_COMMIT \
-          --update-key tailorbird_web.image.0.tag \
+          --update-key tailorbird_web.image.tag \
           --source-branch main
