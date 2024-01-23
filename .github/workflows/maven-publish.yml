@@ -52,8 +52,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           RELEASE_VERSION: ${{ steps.read-version.outputs.version }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:staging-v$RELEASE_VERSION .
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:staging-v$RELEASE_VERSION" >> $GITHUB_OUTPUT
+          docker build -t surajsunrays/$ECR_REPOSITORY:staging-v$RELEASE_VERSION .
+          echo "image=surajsunrays/$ECR_REPOSITORY:staging-v$RELEASE_VERSION" >> $GITHUB_OUTPUT
 #          docker push $ECR_REGISTRY/$ECR_REPOSITORY:staging-v$RELEASE_VERSION
 
 
@@ -67,7 +67,7 @@ jobs:
           docker run --rm -e AUTH_TOKEN=${{ secrets.CI_TOKEN }} bigkevmcd/image-updater::v0.0.2 update \
           --source-repo surajsunrays/hello-world-config \
           --file-path argo-cd/source/overlays/prod/prod.values.yaml \
-          --image-repo $ECR_REGISTRY/$ECR_REPOSITORY \
+          --image-repo surajsunrays/$ECR_REPOSITORY \
           --new-image-url dev-v2-v$RELEASE_VERSION-$GIT_COMMIT \
           --update-key tailorbird_web.image.0.tag \
           --source-branch master
